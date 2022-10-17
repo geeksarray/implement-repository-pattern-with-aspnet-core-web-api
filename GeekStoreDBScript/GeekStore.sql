@@ -1,0 +1,145 @@
+
+USE [master]
+GO
+/****** Object:  Database [GeeksStore]    Script Date: 10/9/2022 4:09:04 PM ******/
+CREATE DATABASE [GeeksStore]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'GeeksStore', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GeeksStore.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'GeeksStore_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\GeeksStore_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [GeeksStore] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GeeksStore].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [GeeksStore] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [GeeksStore] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [GeeksStore] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [GeeksStore] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [GeeksStore] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [GeeksStore] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [GeeksStore] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [GeeksStore] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [GeeksStore] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [GeeksStore] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [GeeksStore] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [GeeksStore] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [GeeksStore] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [GeeksStore] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [GeeksStore] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [GeeksStore] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [GeeksStore] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [GeeksStore] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [GeeksStore] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [GeeksStore] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [GeeksStore] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [GeeksStore] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [GeeksStore] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [GeeksStore] SET  MULTI_USER 
+GO
+ALTER DATABASE [GeeksStore] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [GeeksStore] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [GeeksStore] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [GeeksStore] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [GeeksStore] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [GeeksStore] SET QUERY_STORE = OFF
+GO
+USE [GeeksStore]
+GO
+/****** Object:  Table [dbo].[Category]    Script Date: 10/9/2022 4:09:05 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Category](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [varchar](50) NOT NULL,
+	[Description] [varchar](50) NOT NULL,
+	[CategoryDiscount] [int] NOT NULL,
+ CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Product]    Script Date: 10/9/2022 4:09:05 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Product](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryId] [int] NOT NULL,
+	[ProductName] [varchar](50) NOT NULL,
+	[Qty] [int] NOT NULL,
+	[Price] [decimal](18, 0) NOT NULL,
+ CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Category] ON 
+GO
+INSERT [dbo].[Category] ([Id], [CategoryName], [Description], [CategoryDiscount]) VALUES (1, N'Cell Phones', N'Cell Phones and Accessories', 11)
+GO
+INSERT [dbo].[Category] ([Id], [CategoryName], [Description], [CategoryDiscount]) VALUES (2, N'Laptop', N'Laptop and Accessories', 10)
+GO
+SET IDENTITY_INSERT [dbo].[Category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Product] ON 
+GO
+INSERT [dbo].[Product] ([Id], [CategoryId], [ProductName], [Qty], [Price]) VALUES (1, 1, N'S22', 10, CAST(500 AS Decimal(18, 0)))
+GO
+INSERT [dbo].[Product] ([Id], [CategoryId], [ProductName], [Qty], [Price]) VALUES (2, 1, N'IPhone', 15, CAST(1000 AS Decimal(18, 0)))
+GO
+INSERT [dbo].[Product] ([Id], [CategoryId], [ProductName], [Qty], [Price]) VALUES (3, 2, N'Latitude', 22, CAST(1200 AS Decimal(18, 0)))
+GO
+INSERT [dbo].[Product] ([Id], [CategoryId], [ProductName], [Qty], [Price]) VALUES (4, 2, N'Zenbook', 20, CAST(1500 AS Decimal(18, 0)))
+GO
+INSERT [dbo].[Product] ([Id], [CategoryId], [ProductName], [Qty], [Price]) VALUES (7, 2, N'Chromebook', 12, CAST(1100 AS Decimal(18, 0)))
+GO
+SET IDENTITY_INSERT [dbo].[Product] OFF
+GO
+ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [fk_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([Id])
+GO
+ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [fk_CategoryId]
+GO
+USE [master]
+GO
+ALTER DATABASE [GeeksStore] SET  READ_WRITE 
+GO
