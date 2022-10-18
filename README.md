@@ -16,4 +16,4 @@ For More details visit - https://geeksarray.com/blog/implement-repository-patter
 
 Test CRUD operations created using Repository Pattern
 
-!(https://geeksarray.com/images/blog/implement-repository-pattern-with-aspnet-core-web-api.png)[Implement Repository Pattern With ASP.NET Web API]
+![Implement Repository Pattern With ASP.NET Web API](https://geeksarray.com/images/blog/implement-repository-pattern-with-aspnet-core-web-api.png)
